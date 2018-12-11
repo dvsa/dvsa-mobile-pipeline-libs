@@ -145,9 +145,6 @@ void upload(String bucket, String file) {
 void build() {
     try {
         sh '''
-           sudo su admin -c "JENKINS_HOME=/Users/Shared/Jenkins/Home/Library/Application\\ Support/Jenkins/jenkins-runner.sh"
-           security unlock-keychain /Users/admin/Library/Keychains/login.keychain
-           
            export PATH="$HOME/.fastlane/bin:$PATH"
            fastlane build
            '''
