@@ -76,10 +76,10 @@ void testing(String type, String ui_automation_artifact, String file, String pro
  */
 void security() {
     try {
-        sh """
-           export PATH=/sbin:/usr/sbin:/bin:/usr/bin:/opt/scanrepo/
+        sh '''
+           export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
            git log -p | scanrepo
-           """
+           '''
     } catch (Exception exception) {
         CommonFunctions.log('error', 'RUNNING SECURITY CHECKS: ' + exception)
         currentBuild.result = 'FAILURE'
@@ -93,13 +93,12 @@ void security() {
  */
 void configurePlugin(String plugin_name) {
     try {
-        sh '''
-           export PATH="/usr/local/opt/node@8/bin:$PATH"
-           export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH" 
-           '''
-        sh """
-           cordova plugin add ${plugin_name}
-           """
+        withEnv(["PLUGIN_NAME=${plugin_name}"]) {
+            sh '''
+               export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
+               cordova plugin add ${PLUGIN_NAME}
+               '''
+        }
     } catch (Exception exception) {
         CommonFunctions.log('error', 'CONFIGURING PLUGIN: ' + exception)
         currentBuild.result = 'FAILURE'
@@ -112,7 +111,6 @@ void configurePlugin(String plugin_name) {
 void configure() {
     try {
         sh '''
-            export PATH="/usr/local/opt/node@8/bin:$PATH"
             export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
             cordova platform add ios --save
            '''
