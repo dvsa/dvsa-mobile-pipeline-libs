@@ -70,7 +70,9 @@ void testing(String type, String integration_type, String file, String project_n
                            export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
                            appium &
                            '''
-                        sh 'npm run test:e2e-simulator-bdd'
+                        sh """
+                           npm run test:${test_suite}
+                           """
                         break
                     case 'device farm':
                         CommonFunctions.log('warm', 'DEVICE FARM IS CURRENTLY NOT SUPPORTED')
