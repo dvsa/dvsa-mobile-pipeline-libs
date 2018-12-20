@@ -50,17 +50,32 @@ void sonar() {
  * which type of tests are run
  *
  * @param type - String
- * @param ui_automation_artifact - String
+ * @param integration_type - String
  * @param file - String
  * @param project_name - String
+ * @param test_suite - String
  */
-void testing(String type, String ui_automation_artifact, String file, String project_name) {
+void testing(String type, String integration_type, String file, String project_name, String test_suite) {
     try {
         switch (type) {
             case 'unit':
                 sh """
                    npm run test-ci-headless 
                    """
+                break
+            case 'integration':
+                switch (integration_type) {
+                    case 'appium':
+                        sh '''
+                           export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
+                           appium &
+                           '''
+                        sh 'npm run test:e2e-simulator-bdd'
+                        break
+                    case 'device farm':
+                        CommonFunctions.log('warm', 'DEVICE FARM IS CURRENTLY NOT SUPPORTED')
+                        break;
+                }
                 break
             default:
                 CommonFunctions.log('warm', 'INCORRECT PARAMETER PROVIDED THE TESTS WILL NOT RUN')
