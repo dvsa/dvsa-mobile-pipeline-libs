@@ -130,6 +130,7 @@ void configure() {
         sh '''
             export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
             cordova platform add ios --save
+            mv fastlane cvs-app-mobile/platform/ios
            '''
     } catch (Exception exception) {
         CommonFunctions.log('error', 'CONFIGURING CORDOVA PLATFORM: ' + exception)
