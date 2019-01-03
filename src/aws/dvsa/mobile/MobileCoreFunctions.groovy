@@ -164,7 +164,7 @@ void build() {
            security unlock-keychain /Users/admin/Library/Keychains/login.keychain
            
            export PATH="$HOME/.fastlane/bin:$PATH"
-           fastlane build
+           bundle exec fastlane build
            '''
     } catch (Exception exception) {
         CommonFunctions.log('error', 'BUILDING IPA FILE: ' + exception)
